@@ -1,0 +1,129 @@
+﻿<Window
+    x:Class="AutoCadObjectEditor.Editor.EditorView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:controls="clr-namespace:AutoCadObjectEditor.Controls"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:objects="clr-namespace:AutoCadObjectEditor.EditableObjects"
+    Title="Редактор объектов"
+    Width="600"
+    Height="360"
+    mc:Ignorable="d">
+
+    <StackPanel>
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="0.5*" />
+                <ColumnDefinition Width="0.5*" />
+            </Grid.ColumnDefinitions>
+
+            <Border
+                Grid.Row="0"
+                Grid.Column="0"
+                BorderBrush="Gray"
+                BorderThickness="1">
+
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="25" />
+                        <RowDefinition Height="*" />
+                    </Grid.RowDefinitions>
+
+                    <StackPanel Grid.Row="0" Background="SkyBlue">
+                        <Label
+                            HorizontalAlignment="Center"
+                            Content="Обозреватель объектов"
+                            FontWeight="Bold" />
+                    </StackPanel>
+
+                    <TreeView
+                        x:Name="TreeViewObjects"
+                        Grid.Row="1"
+                        Height="250"
+                        BorderThickness="0"
+                        ItemsSource="{Binding Layers}">
+                        <TreeView.ItemTemplate>
+                            <HierarchicalDataTemplate ItemsSource="{Binding Path=Objects}">
+                                <TextBlock Text="{Binding Name}" />
+                                <HierarchicalDataTemplate.ItemTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Text="{Binding Name}" />
+                                    </DataTemplate>
+                                </HierarchicalDataTemplate.ItemTemplate>
+                            </HierarchicalDataTemplate>
+                        </TreeView.ItemTemplate>
+                    </TreeView>
+                </Grid>
+            </Border>
+
+            <Border
+                Grid.Row="0"
+                Grid.Column="1"
+                BorderBrush="Gray"
+                BorderThickness="1">
+
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="25" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+
+                    <StackPanel Grid.Row="0" Background="SkyBlue">
+                        <Label
+                            HorizontalAlignment="Center"
+                            Content="Свойства"
+                            FontWeight="Bold" />
+                    </StackPanel>
+
+                    <ContentControl
+                        Grid.Row="1"
+                        Margin="5"
+                        Content="{Binding ElementName=TreeViewObjects, Path=SelectedItem}">
+
+                        <ContentControl.Resources>
+
+                            <!--  Элементы управления получают SelectedItem дерева в качестве DataContext  -->
+
+                            <DataTemplate DataType="{x:Type objects:EditableLayer}">
+                                <controls:LayerControl />
+                            </DataTemplate>
+
+                            <DataTemplate DataType="{x:Type objects:EditablePoint}">
+                                <controls:PointControl />
+                            </DataTemplate>
+
+                            <DataTemplate DataType="{x:Type objects:EditableLine}">
+                                <controls:LineControl />
+                            </DataTemplate>
+
+                            <DataTemplate DataType="{x:Type objects:EditableCircle}">
+                                <controls:CircleControl />
+                            </DataTemplate>
+
+                        </ContentControl.Resources>
+
+                    </ContentControl>
+                </Grid>
+            </Border>
+        </Grid>
+
+        <StackPanel
+            Height="40"
+            HorizontalAlignment="Center"
+            VerticalAlignment="Center"
+            Orientation="Horizontal">
+
+            <Button
+                Margin="5"
+                Padding="5"
+                Click="ButtonSave_Click"
+                Content="Сохранить" />
+            <Button
+                Margin="5"
+                Padding="5"
+                Click="ButtonCancel_Click"
+                Content="Отмена" />
+        </StackPanel>
+    </StackPanel>
+</Window>
