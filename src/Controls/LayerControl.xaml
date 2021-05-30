@@ -2,9 +2,11 @@
     x:Class="AutoCadObjectEditor.Controls.LayerControl"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:ac="clr-namespace:Autodesk.AutoCAD.Windows;assembly=AcWindows"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:editableObjects="clr-namespace:AutoCadObjectEditor.EditableObjects"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
+    d:DataContext="{d:DesignInstance Type=editableObjects:EditableLayer}"
     d:DesignHeight="450"
     d:DesignWidth="800"
     mc:Ignorable="d">
@@ -34,11 +36,13 @@
             Grid.Row="1"
             Grid.Column="0"
             Content="Цвет:" />
-        <xctk:ColorPicker
-            x:Name="ColorPicker"
+        <ac:ColorComboBox
+            x:Name="ColorComboBox"
             Grid.Row="1"
             Grid.Column="1"
-            SelectedColor="{Binding Color}" />
+            CurrentColor="{Binding ColorItem, Mode=TwoWay}"
+            SupportsByBlock="False"
+            SupportsByLayer="False" />
 
         <Label
             Grid.Row="2"

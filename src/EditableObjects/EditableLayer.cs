@@ -1,6 +1,6 @@
 ﻿using Autodesk.AutoCAD.DatabaseServices;
+using Autodesk.AutoCAD.Windows;
 using System.Collections.ObjectModel;
-using System.Windows.Media;
 
 namespace AutoCadObjectEditor.EditableObjects
 {
@@ -10,12 +10,14 @@ namespace AutoCadObjectEditor.EditableObjects
         private const int MAX_NAME_LENGTH = 255;
 
         private string _name;
+        private ColorItem _colorItem;
+        private bool _isVisible;
 
         public EditableLayer(LayerTableRecord layer)
         {
             Id = layer.Id;
             Name = layer.Name;
-            Color = Color.FromRgb(layer.Color.ColorValue.R, layer.Color.ColorValue.G, layer.Color.ColorValue.B);
+            ColorItem = new ColorItem(layer.Color);
             IsVisible = !layer.IsOff;
             Objects = new ObservableCollection<EditableObject>();
         }
@@ -36,18 +38,43 @@ namespace AutoCadObjectEditor.EditableObjects
 
         public bool IsNameEditable => Name != DEFAULT_LAYER_NAME;
 
-        public Color Color { get; set; }
+        public ColorItem ColorItem
+        {
+            get
+            {
+                return _colorItem;
+            }
+            set
+            {
+                _colorItem = value;
+                OnPropertyChanged("ColorItem");
+            }
+        }
 
-        public bool IsVisible { get; set; }
+        public bool IsVisible
+        {
+            get
+            {
+                return _isVisible;
+            }
+            set
+            {
+                if (_isVisible != value)
+                {
+                    _isVisible = value;
+                    OnPropertyChanged("IsVisible");
+                }
+            }
+        }
 
-        public ObservableCollection<EditableObject> Objects { get; set; }
+        public ObservableCollection<EditableObject> Objects { get; private set; }
 
         public override void UpdateDbObject(DBObject dbObject)
         {
             var layerTableRecord = dbObject as LayerTableRecord;
 
             layerTableRecord.Name = Name;
-            layerTableRecord.Color = Autodesk.AutoCAD.Colors.Color.FromColor(Color);
+            layerTableRecord.Color = ColorItem.AcadColor;
             layerTableRecord.IsOff = !IsVisible;
         }
     }
