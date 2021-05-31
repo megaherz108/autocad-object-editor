@@ -20,18 +20,21 @@ namespace AutoCadObjectEditor.EditableObjects
             ColorItem = new ColorItem(layer.Color);
             IsVisible = !layer.IsOff;
             Objects = new ObservableCollection<EditableObject>();
+            IsChanged = false;
         }
 
+        // TODO: Сделать валидацию на основе ValidationRules, сделать SetProperty() вместо текущей установки
         public override string Name
         {
             get => _name;
             set
             {
-                if (!string.IsNullOrEmpty(value))
+                if (_name != value  && !string.IsNullOrEmpty(value))
                 {
                     // TODO: Информировать пользователя при превышении макс. длины
                     _name = value.Length > MAX_NAME_LENGTH ? value.Substring(0, MAX_NAME_LENGTH) : value;
                     OnPropertyChanged("Name");
+                    IsChanged = true;
                 }
             }
         }
@@ -40,31 +43,14 @@ namespace AutoCadObjectEditor.EditableObjects
 
         public ColorItem ColorItem
         {
-            get
-            {
-                return _colorItem;
-            }
-            set
-            {
-                _colorItem = value;
-                OnPropertyChanged("ColorItem");
-            }
+            get => _colorItem;
+            set => SetProperty("ColorItem", ref _colorItem, value);
         }
 
         public bool IsVisible
         {
-            get
-            {
-                return _isVisible;
-            }
-            set
-            {
-                if (_isVisible != value)
-                {
-                    _isVisible = value;
-                    OnPropertyChanged("IsVisible");
-                }
-            }
+            get => _isVisible;
+            set => SetProperty("IsVisible", ref _isVisible, value);
         }
 
         public ObservableCollection<EditableObject> Objects { get; private set; }

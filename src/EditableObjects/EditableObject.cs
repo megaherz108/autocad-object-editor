@@ -6,22 +6,11 @@ namespace AutoCadObjectEditor.EditableObjects
 {
     public abstract class EditableObject : INotifyPropertyChanged
     {
-        private string _name;
-
         public ObjectId Id { get; set; }
 
-        public virtual string Name
-        {
-            get
-            {
-                return _name;
-            }
-            set
-            {
-                _name = value;
-                OnPropertyChanged("Name");
-            }
-        }
+        public virtual string Name { get; set; }
+
+        public bool IsChanged { get; set; } = false;
 
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -31,5 +20,21 @@ namespace AutoCadObjectEditor.EditableObjects
         }
 
         public abstract void UpdateDbObject(DBObject originalObject);
+
+        protected bool SetProperty<T>(string name, ref T oldValue, T newValue)
+        {
+            if (oldValue == null || !oldValue.Equals(newValue))
+            {
+                oldValue = newValue;
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
+                IsChanged = true;
+
+                return true;
+            }
+            else 
+            {
+                return false;
+            }
+        }
     }
 }

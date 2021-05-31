@@ -6,13 +6,15 @@ using Autodesk.AutoCAD.DatabaseServices;
 using Autodesk.AutoCAD.Runtime;
 using System.Collections.Generic;
 using System.Linq;
+using Autodesk.Internal.Windows;
+using Autodesk.Windows.Themes;
 
 [assembly: CommandClass(typeof(AutoCadObjectEditor.Main))]
 namespace AutoCadObjectEditor
 {
     public class Main
     {
-        [CommandMethod("AUTOCAD")]
+        [CommandMethod("ObjectEditor")]
         public void ShowEditor()
         {
             try
@@ -43,14 +45,14 @@ namespace AutoCadObjectEditor
             {
                 // Получаем список слоев для редактирования
                 List<LayerTableRecord> dbLayers = db.GetLayers();
-                foreach(var dbLayer in dbLayers)
+                foreach (var dbLayer in dbLayers)
                 {
                     layers.Add(new EditableLayer(dbLayer));
                 }
 
                 // Получаем графические объекты из базы и добавляем в коллекцию объектов родительского слоя
                 List<DBObject> dbObjects = db.GetGraphicObjects();
-                foreach(var dbObject in dbObjects)
+                foreach (var dbObject in dbObjects)
                 {
                     var layer = layers.First(l => l.Name == ((Entity)dbObject).Layer);
                     layer.Objects.Add(dbObject.ToEditableObject());
@@ -60,23 +62,34 @@ namespace AutoCadObjectEditor
             return layers;
         }
 
-        private void SaveChanges(IEnumerable<EditableObject> layers)
+        private void SaveChanges(IEnumerable<EditableLayer> layers)
         {
             using (var db = new AutoCadDbFacade())
             {
-                foreach (EditableLayer layer in layers)
+                bool isChanged = layers.Any(l => l.IsChanged || l.Objects.Any(obj => obj.IsChanged));
+
+                if (isChanged)
                 {
-                    DBObject dbLayer = db.GetObjectForWrite(layer.Id);
-                    layer.UpdateDbObject(dbLayer);
-
-                    foreach (EditableObject graphicObject in layer.Objects)
+                    foreach (EditableLayer layer in layers)
                     {
-                        DBObject dbObject = db.GetObjectForWrite(graphicObject.Id);
-                        graphicObject.UpdateDbObject(dbObject);
-                    }
-                }
+                        // Сохраняем слои, в которых есть изменения
+                        if (layer.IsChanged)
+                        {
+                            DBObject dbLayer = db.GetObjectForWrite(layer.Id);
+                            layer.UpdateDbObject(dbLayer);
+                        }
 
-                db.Commit();
+                        // Сохраняем объекты, в которых есть изменения
+                        var changedObjects = layer.Objects.Where(obj => obj.IsChanged);
+                        foreach (EditableObject graphicObject in changedObjects)
+                        {
+                            DBObject dbObject = db.GetObjectForWrite(graphicObject.Id);
+                            graphicObject.UpdateDbObject(dbObject);
+                        }
+                    }
+
+                    db.Commit();
+                }
             }
         }
     }

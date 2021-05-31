@@ -7,6 +7,10 @@ namespace AutoCadObjectEditor.EditableObjects
     {
         private const string POINT_NAME = "Точка";
 
+        private double _x;
+        private double _y;
+        private double _z;
+
         public EditablePoint(DBPoint point)
         {
             Id = point.Id;
@@ -14,6 +18,7 @@ namespace AutoCadObjectEditor.EditableObjects
             X = point.Position.X;
             Y = point.Position.Y;
             Z = point.Position.Z;
+            IsChanged = false;
         }
 
         public override void UpdateDbObject(DBObject dbObject)
@@ -23,10 +28,22 @@ namespace AutoCadObjectEditor.EditableObjects
             point.Position = new Point3d(X, Y, Z);
         }
 
-        public double X { get; set; }
+        public double X
+        {
+            get => _x;
+            set => SetProperty("X", ref _x, value);
+        }
 
-        public double Y { get; set; }
+        public double Y
+        {
+            get => _y;
+            set => SetProperty("Y", ref _y, value);
+        }
 
-        public double Z { get; set; }
+        public double Z
+        {
+            get => _z;
+            set => SetProperty("Z", ref _z, value);
+        }
     }
 }
