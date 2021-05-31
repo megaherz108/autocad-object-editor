@@ -1,5 +1,4 @@
-﻿using System.ComponentModel;
-using System.Windows;
+﻿using System.Windows;
 
 namespace AutoCadObjectEditor.Editor
 {
@@ -19,16 +18,11 @@ namespace AutoCadObjectEditor.Editor
 
         private void ButtonCancel_Click(object sender, RoutedEventArgs e)
         {
-            this.Close();
-        }
-
-        protected override void OnClosing(CancelEventArgs e)
-        {
             MessageBoxResult messageBoxResult = MessageBox.Show("Выйти без сохранения изменений?", "Подтвердите выход", MessageBoxButton.YesNo);
 
             if (messageBoxResult == MessageBoxResult.Yes)
             {
-                base.OnClosing(e);
+                this.Close();
             }
         }
     }

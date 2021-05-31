@@ -11,6 +11,10 @@
     Height="360"
     mc:Ignorable="d">
 
+    <Window.Resources>
+        <BooleanToVisibilityConverter x:Key="BoolToVisibilityConverter" />
+    </Window.Resources>
+
     <StackPanel>
         <Grid>
             <Grid.ColumnDefinitions>
@@ -44,11 +48,17 @@
                         BorderThickness="0"
                         ItemsSource="{Binding Layers}">
                         <TreeView.ItemTemplate>
-                            <HierarchicalDataTemplate ItemsSource="{Binding Path=Objects}">
-                                <TextBlock Text="{Binding Name}" />
+                            <HierarchicalDataTemplate ItemsSource="{Binding Objects}">
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="{Binding Name}" />
+                                    <TextBlock Text="*" Visibility="{Binding IsChanged, Converter={StaticResource BoolToVisibilityConverter}}" />
+                                </StackPanel>
                                 <HierarchicalDataTemplate.ItemTemplate>
                                     <DataTemplate>
-                                        <TextBlock Text="{Binding Name}" />
+                                        <StackPanel Orientation="Horizontal">
+                                            <TextBlock Text="{Binding Name}" />
+                                            <TextBlock Text="*" Visibility="{Binding IsChanged, Converter={StaticResource BoolToVisibilityConverter}}" />
+                                        </StackPanel>
                                     </DataTemplate>
                                 </HierarchicalDataTemplate.ItemTemplate>
                             </HierarchicalDataTemplate>
