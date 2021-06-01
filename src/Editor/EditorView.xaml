@@ -6,9 +6,11 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:objects="clr-namespace:AutoCadObjectEditor.EditableObjects"
+    xmlns:vm="clr-namespace:AutoCadObjectEditor.Editor"
     Title="Редактор объектов"
     Width="600"
     Height="360"
+    d:DataContext="{d:DesignInstance Type=vm:EditorViewModel}"
     mc:Ignorable="d">
 
     <Window.Resources>
@@ -125,11 +127,13 @@
             Orientation="Horizontal">
 
             <Button
+                x:Name="ButtonSave"
                 Margin="5"
                 Padding="5"
                 Click="ButtonSave_Click"
                 Content="Сохранить" />
             <Button
+                x:Name="ButtonCancel"
                 Margin="5"
                 Padding="5"
                 Click="ButtonCancel_Click"

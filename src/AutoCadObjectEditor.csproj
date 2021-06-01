@@ -107,6 +107,7 @@
   <ItemGroup>
     <Compile Include="DB\AutoCadDbFacade.cs" />
     <Compile Include="DB\DBObjectExtensions.cs" />
+    <Compile Include="Editor\IChangeable.cs" />
     <Compile Include="Main.cs" />
     <Compile Include="Controls\CircleControl.xaml.cs">
       <DependentUpon>CircleControl.xaml</DependentUpon>
@@ -130,6 +131,7 @@
     <Compile Include="EditableObjects\EditablePoint.cs" />
     <Compile Include="Editor\EditorViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RelayCommand.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

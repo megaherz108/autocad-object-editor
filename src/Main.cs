@@ -1,13 +1,11 @@
 ﻿using AutoCadObjectEditor.DB;
-using AutoCadObjectEditor.Editor;
 using AutoCadObjectEditor.EditableObjects;
+using AutoCadObjectEditor.Editor;
 using Autodesk.AutoCAD.ApplicationServices;
 using Autodesk.AutoCAD.DatabaseServices;
 using Autodesk.AutoCAD.Runtime;
 using System.Collections.Generic;
 using System.Linq;
-using Autodesk.Internal.Windows;
-using Autodesk.Windows.Themes;
 
 [assembly: CommandClass(typeof(AutoCadObjectEditor.Main))]
 namespace AutoCadObjectEditor
@@ -21,14 +19,15 @@ namespace AutoCadObjectEditor
             {
                 List<EditableLayer> layers = GetLayersWithObjects();
 
-                var editorViewModel = new EditorViewModel(layers);
-                var editorView = new EditorView { DataContext = editorViewModel };
+                var view = new EditorView();
+                var viewModel = new EditorViewModel(layers);
+                view.DataContext = viewModel;
 
-                bool? result = editorView.ShowDialog();
+                bool? result = view.ShowDialog();
 
                 if (result ?? false)
                 {
-                    SaveChanges(editorViewModel.Layers);
+                    SaveChanges(viewModel.Layers);
                 }
             }
             catch (System.Exception ex)
