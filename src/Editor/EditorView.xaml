@@ -75,7 +75,7 @@
                 BorderBrush="Gray"
                 BorderThickness="1">
 
-                <Grid>
+                <Grid x:Name="GridObjectProperties">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="25" />
                         <RowDefinition Height="Auto" />

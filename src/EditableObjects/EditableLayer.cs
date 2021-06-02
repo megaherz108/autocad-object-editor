@@ -7,7 +7,6 @@ namespace AutoCadObjectEditor.EditableObjects
     public class EditableLayer : EditableObject
     {
         private const string DEFAULT_LAYER_NAME = "0";
-        private const int MAX_NAME_LENGTH = 255;
 
         private string _name;
         private ColorItem _colorItem;
@@ -23,20 +22,10 @@ namespace AutoCadObjectEditor.EditableObjects
             IsChanged = false;
         }
 
-        // TODO: Сделать валидацию на основе ValidationRules, сделать SetProperty() вместо текущей установки
         public override string Name
         {
             get => _name;
-            set
-            {
-                if (_name != value  && !string.IsNullOrEmpty(value))
-                {
-                    // TODO: Информировать пользователя при превышении макс. длины
-                    _name = value.Length > MAX_NAME_LENGTH ? value.Substring(0, MAX_NAME_LENGTH) : value;
-                    OnPropertyChanged("Name");
-                    IsChanged = true;
-                }
-            }
+            set => SetProperty("Name", ref _name, value);
         }
 
         public bool IsNameEditable => Name != DEFAULT_LAYER_NAME;

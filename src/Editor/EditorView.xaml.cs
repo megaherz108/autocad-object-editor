@@ -29,6 +29,13 @@ namespace AutoCadObjectEditor.Editor
 
         private void ButtonSave_Click(object sender, RoutedEventArgs e)
         {
+            string errors = this.GetValidationErrors();
+            if (errors != "")
+            {
+                MessageBox.Show("Проверьте правильность введенных данных", "Ошибка валидации");
+                return;
+            }
+
             _forceClosing = true;
             this.DialogResult = true;
             this.Close();
