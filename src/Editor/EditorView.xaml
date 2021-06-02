@@ -57,7 +57,7 @@
                                 </StackPanel>
                                 <HierarchicalDataTemplate.ItemTemplate>
                                     <DataTemplate>
-                                        <StackPanel>
+                                        <StackPanel Orientation="Horizontal">
                                             <TextBlock Text="{Binding Name}" />
                                             <TextBlock Text="*" Visibility="{Binding IsChanged, Converter={StaticResource BoolToVisibilityConverter}}" />
                                         </StackPanel>
