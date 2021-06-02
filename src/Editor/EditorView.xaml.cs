@@ -1,4 +1,5 @@
-﻿using System.ComponentModel;
+﻿using AutoCadObjectEditor.Helpers;
+using System.ComponentModel;
 using System.Windows;
 
 namespace AutoCadObjectEditor.Editor

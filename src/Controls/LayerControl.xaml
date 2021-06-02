@@ -13,15 +13,12 @@
     mc:Ignorable="d">
 
     <UserControl.Resources>
-        <rules:LayerNameValidationRule x:Key="LayerNameValidationRule" />
-        <Style TargetType="TextBox">
-            <Style.Triggers>
-                <Trigger Property="Validation.HasError" Value="True">
-                    <Setter Property="Foreground" Value="Red" />
-                    <Setter Property="ToolTip" Value="{Binding RelativeSource={RelativeSource Self}, Path=(Validation.Errors)[0].ErrorContent}" />
-                </Trigger>
-            </Style.Triggers>
-        </Style>
+        <ResourceDictionary>
+            <rules:LayerNameValidationRule x:Key="LayerNameValidationRule" />
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="../Styles.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
     </UserControl.Resources>
 
     <Grid>
@@ -44,6 +41,7 @@
             Grid.Row="0"
             Grid.Column="1"
             IsEnabled="{Binding IsNameEditable}"
+            Style="{StaticResource ResourceKey=ErrorToolTip}"
             Validation.Error="TextBoxName_Error">
             <TextBox.Text>
                 <Binding NotifyOnValidationError="True" Path="Name">
@@ -58,13 +56,21 @@
             Grid.Row="1"
             Grid.Column="0"
             Content="Цвет:" />
-        <ac:ColorComboBox
-            x:Name="ColorComboBox"
+        <StackPanel
             Grid.Row="1"
             Grid.Column="1"
-            CurrentColor="{Binding ColorItem, Mode=TwoWay}"
-            SupportsByBlock="False"
-            SupportsByLayer="False" />
+            Orientation="Horizontal">
+            <Button
+                x:Name="ButtonSelectColor"
+                Width="25"
+                Height="25"
+                Click="ButtonSelectColor_Click"
+                Style="{StaticResource ColorButtonStyle}">
+                <Button.Background>
+                    <SolidColorBrush Color="{Binding ColorItem.Color}" />
+                </Button.Background>
+            </Button>
+        </StackPanel>
 
         <Label
             Grid.Row="2"
@@ -73,7 +79,6 @@
         <CheckBox
             Grid.Row="2"
             Grid.Column="1"
-            Margin="0,5"
             IsChecked="{Binding IsVisible}" />
     </Grid>
 </UserControl>

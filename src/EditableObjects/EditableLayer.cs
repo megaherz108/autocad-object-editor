@@ -1,6 +1,7 @@
 ﻿using Autodesk.AutoCAD.DatabaseServices;
 using Autodesk.AutoCAD.Windows;
 using System.Collections.ObjectModel;
+using System.Windows.Media;
 
 namespace AutoCadObjectEditor.EditableObjects
 {

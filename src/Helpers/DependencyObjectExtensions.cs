@@ -4,7 +4,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 
-namespace AutoCadObjectEditor
+namespace AutoCadObjectEditor.Helpers
 {
     public static class DependencyObjectExtensions
     {

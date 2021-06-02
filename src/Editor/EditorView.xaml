@@ -14,10 +14,15 @@
     mc:Ignorable="d">
 
     <Window.Resources>
-        <BooleanToVisibilityConverter x:Key="BoolToVisibilityConverter" />
+        <ResourceDictionary>
+            <BooleanToVisibilityConverter x:Key="BoolToVisibilityConverter" />
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="../Styles.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
     </Window.Resources>
 
-    <StackPanel>
+    <StackPanel Style="{StaticResource ResourceKey=RootStyle}">
         <Grid>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="0.5*" />
@@ -27,28 +32,23 @@
             <Border
                 Grid.Row="0"
                 Grid.Column="0"
-                BorderBrush="Gray"
-                BorderThickness="1">
+                Style="{StaticResource ResourceKey=GrayBorder}">
 
                 <Grid>
                     <Grid.RowDefinitions>
-                        <RowDefinition Height="25" />
+                        <RowDefinition Height="Auto" />
                         <RowDefinition Height="*" />
                     </Grid.RowDefinitions>
 
-                    <StackPanel Grid.Row="0" Background="SkyBlue">
-                        <Label
-                            HorizontalAlignment="Center"
-                            Content="Обозреватель объектов"
-                            FontWeight="Bold" />
+                    <StackPanel Grid.Row="0" Style="{StaticResource ResourceKey=Caption}">
+                        <Label Content="Обозреватель объектов" />
                     </StackPanel>
 
                     <TreeView
                         x:Name="TreeViewObjects"
                         Grid.Row="1"
-                        Height="250"
-                        BorderThickness="0"
-                        ItemsSource="{Binding Layers}">
+                        ItemsSource="{Binding Layers}"
+                        Style="{StaticResource ResourceKey=TreeView}">
                         <TreeView.ItemTemplate>
                             <HierarchicalDataTemplate ItemsSource="{Binding Objects}">
                                 <StackPanel Orientation="Horizontal">
@@ -57,7 +57,7 @@
                                 </StackPanel>
                                 <HierarchicalDataTemplate.ItemTemplate>
                                     <DataTemplate>
-                                        <StackPanel Orientation="Horizontal">
+                                        <StackPanel>
                                             <TextBlock Text="{Binding Name}" />
                                             <TextBlock Text="*" Visibility="{Binding IsChanged, Converter={StaticResource BoolToVisibilityConverter}}" />
                                         </StackPanel>
@@ -72,20 +72,16 @@
             <Border
                 Grid.Row="0"
                 Grid.Column="1"
-                BorderBrush="Gray"
-                BorderThickness="1">
+                Style="{StaticResource ResourceKey=GrayBorder}">
 
                 <Grid x:Name="GridObjectProperties">
                     <Grid.RowDefinitions>
-                        <RowDefinition Height="25" />
                         <RowDefinition Height="Auto" />
+                        <RowDefinition Height="*" />
                     </Grid.RowDefinitions>
 
-                    <StackPanel Grid.Row="0" Background="SkyBlue">
-                        <Label
-                            HorizontalAlignment="Center"
-                            Content="Свойства"
-                            FontWeight="Bold" />
+                    <StackPanel Grid.Row="0" Style="{StaticResource ResourceKey=Caption}">
+                        <Label Content="Свойства" />
                     </StackPanel>
 
                     <ContentControl
@@ -120,22 +116,15 @@
             </Border>
         </Grid>
 
-        <StackPanel
-            Height="40"
-            HorizontalAlignment="Center"
-            VerticalAlignment="Center"
-            Orientation="Horizontal">
+        <StackPanel Style="{StaticResource ResourceKey=SaveCancel}">
 
             <Button
                 x:Name="ButtonSave"
-                Margin="5"
-                Padding="5"
                 Click="ButtonSave_Click"
                 Content="Сохранить" />
+
             <Button
                 x:Name="ButtonCancel"
-                Margin="5"
-                Padding="5"
                 Click="ButtonCancel_Click"
                 Content="Отмена" />
         </StackPanel>

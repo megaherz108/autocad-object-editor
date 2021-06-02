@@ -2,7 +2,7 @@
 using Autodesk.AutoCAD.DatabaseServices;
 using System;
 
-namespace AutoCadObjectEditor.DB
+namespace AutoCadObjectEditor.Helpers
 {
     public static class DBObjectExtensions
     {
