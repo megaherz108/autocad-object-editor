@@ -1,9 +1,9 @@
 # autocad-object-editor
 
-Плагин для редактирования слоев и примитивов в AutoCAD.
+WPF plugin for layers and primitives editing in AutoCAD.
 
-## Использование
+## Usage
 
-1. Собрать проект.
-2. Загрузить плагин в AutoCAD (протестировано для версии 2022) с помощью команды NETLOAD.
-3. Запустить редактор с помощью команды OBJECTEDITOR.
+1. Build the project.
+2. Load the plugin in AutoCAD (tested for version 2022) with command NETLOAD.
+3. Start the editor with command OBJECTEDITOR.
